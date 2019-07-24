@@ -42,6 +42,33 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - images/absolute-spa.jpg
+    - images/aspirina.jpg
+    - images/shopping-cart-02.png
+    - images/Previous.png
+    - images/Cart-Delete.png
+    - images/BeverageAlcohol-WF.png
+    - images/Caduceus.png
+    - images/Corte.jpg
+    - images/detrifico.jpg
+    - images/euroSnacks.jpg
+    - images/exitoexpress.jpg
+    - images/farmatodo.jpg
+    - images/habitacionSencilla.jpg
+    - images/habitacionDoble.jpg
+    - images/habitacionSuite.jpg
+    - images/jabon.jpg
+    - images/LaMesaVegetariana.jpg
+    - images/masaje.jpg
+    - images/Mcdonalds.jpg
+    - images/Panaderia.jpg
+    - images/prd-cerveza-japonesa-kirin-japonshop.jpg
+    - images/ron.jpg
+    - images/TercerMilenio.jpg
+    - images/ViaggioCountry.jpg
+    - images/whysky.jpg
+    - images/logo_spondylux_vertical.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

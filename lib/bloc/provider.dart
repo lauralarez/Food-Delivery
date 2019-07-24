@@ -1,4 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:food_delivery/model/foodItem.dart';
+import 'loginBloc.dart';
+
+class Provider extends InheritedWidget {
+  final bloc = new Bloc();
+
+  Provider({Key key, Widget child}) : super(key: key, child: child);
+
+  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+
+  static Bloc of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(Provider) as Provider).bloc;
+  }
+}
 
 class CartProvider {
   //couterProvider only consists of a counter and a method which is responsible for increasing the value of count

@@ -1,9 +1,9 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'bloc/cartlistBloc.dart';
-import 'bloc/listTileColorBloc.dart';
-import 'model/foodItem.dart';
+import '../bloc/cartlistBloc.dart';
+import '../bloc/listTileColorBloc.dart';
+import '../model/foodItem.dart';
 
 class Cart extends StatelessWidget {
   @override
@@ -107,7 +107,7 @@ class BottomBar extends StatelessWidget {
       margin: EdgeInsets.only(right: 25),
       padding: EdgeInsets.all(25),
       decoration: BoxDecoration(
-          color: Color(0xfffeb324), borderRadius: BorderRadius.circular(15)),
+          color: Color(0xFF33D9D6), borderRadius: BorderRadius.circular(15)),
       child: Row(
         children: <Widget>[
           Text(
@@ -206,7 +206,7 @@ class CartBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(35, 40, 25, 0),
+      padding: EdgeInsets.fromLTRB(35, 0, 25, 0),
       child: Column(
         children: <Widget>[
           CustomAppBar(),
@@ -253,19 +253,21 @@ class CartBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "Mi",
+                "Mi Orden",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 35,
+                  color: Color(0xFF0A4FAC),
                 ),
               ),
-              Text(
+              /*Text(
                 "orden",
                 style: TextStyle(
                   fontWeight: FontWeight.w300,
                   fontSize: 35,
+                  color: Color(0xFF33D9D6),
                 ),
-              ),
+              ),*/
             ],
           )
         ],
@@ -282,13 +284,14 @@ class CartListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LongPressDraggable(
-      hapticFeedbackOnStart: false,      
+      hapticFeedbackOnStart: false,
       maxSimultaneousDrags: 1,
       data: foodItem,
       feedback: DraggableChildFeedback(foodItem: foodItem),
       child: DraggableChild(foodItem: foodItem),
-      childWhenDragging: foodItem.quantity > 1 ? DraggableChild(foodItem: foodItem) : Container(),
-      
+      childWhenDragging: foodItem.quantity > 1
+          ? DraggableChild(foodItem: foodItem)
+          : Container(),
     );
   }
 }
@@ -361,7 +364,7 @@ class ItemContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          ClipRRect(
+          /*ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: Image.network(
               foodItem.imgUrl,
@@ -369,7 +372,7 @@ class ItemContent extends StatelessWidget {
               height: 55,
               width: 80,
             ),
-          ),
+          ),*/
           RichText(
             text: TextSpan(
                 style: TextStyle(
@@ -377,9 +380,7 @@ class ItemContent extends StatelessWidget {
                     color: Colors.black,
                     fontWeight: FontWeight.w700),
                 children: [
-                  TextSpan(
-                    text: foodItem.quantity.toString()
-                    ),
+                  TextSpan(text: foodItem.quantity.toString()),
                   TextSpan(text: " x "),
                   TextSpan(
                     text: foodItem.title,
@@ -406,12 +407,19 @@ class CustomAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(0.0),
           child: GestureDetector(
-            child: Icon(
+            child: Image.asset(
+              'images/Previous.png',
+              width: 45,
+              height: 55,
+              fit: BoxFit.cover,
+            ),
+            /*Icon(
               CupertinoIcons.back,
               size: 30,
-            ),
+              color: Color(0xffe3d5b6),
+            ),*/
             onTap: () {
               Navigator.pop(context);
             },
@@ -451,14 +459,20 @@ class _DragTargetWidgetState extends State<DragTargetWidget> {
       onLeave: (FoodItem foodItem) {
         colorBloc.setColor(Colors.white);
       },
-      
       builder: (BuildContext context, List incoming, List rejected) {
         return Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Icon(
+          padding: const EdgeInsets.all(0.0),
+          child: Image.asset(
+            'images/Cart-Delete.png',
+            width: 50,
+            height: 60,
+            fit: BoxFit.cover,
+          ),
+          /*Icon(
             CupertinoIcons.delete,
             size: 35,
-          ),
+            color: Color(0xffe3d5b6),
+          ),*/
         );
       },
     );
