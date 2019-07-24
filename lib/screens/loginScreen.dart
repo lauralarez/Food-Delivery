@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/screens/registrationScreen.dart';
 import '../bloc/loginBloc.dart';
 import '../bloc/provider.dart';
 import 'mainScreen.dart';
 
 class LoginScreen extends StatelessWidget {
   Widget build(context) {
-    final bloc = Provider.of(context);
+    final bloc = new Bloc();
 
     return Container(
         margin: EdgeInsets.all(20.0),
@@ -30,6 +31,20 @@ class LoginScreen extends StatelessWidget {
                 margin: EdgeInsets.only(top: 25.0),
               ),
               submitButton(bloc, context),
+              Container(
+                margin: EdgeInsets.only(top: 25.0),
+              ),
+              GestureDetector(
+                child: Text(
+                  "Registrarse",
+                  style: TextStyle(color: Color(0xFF0A4FAC), fontWeight: FontWeight.w700,
+                  fontSize: 25),
+                ),
+                onTap: () {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegistrationScreen()));
+                },
+              ),
             ],
           ),
         ));
@@ -74,21 +89,17 @@ class LoginScreen extends StatelessWidget {
       stream: bloc.submitValid,
       builder: (context, snapshot) {
         return RaisedButton(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-              child: Text(
-                'INGRESAR',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+            child: Text(
+              'INGRESAR',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
             ),
-            color: Color(0xffe3d5b6),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainScreen()));
-            }
-            //snapshot.hasData ? bloc.submit : null,
-
-            );
+          ),
+          color: Color(0xffe3d5b6),
+          onPressed: () => snapshot.hasData ? bloc.submit(context) : null,
+          //snapshot.hasData ? bloc.submit : null,
+        );
       },
     );
   }

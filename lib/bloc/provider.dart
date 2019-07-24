@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/model/foodItem.dart';
+import 'package:food_delivery/model/itemsModel.dart';
 import 'loginBloc.dart';
 
 class Provider extends InheritedWidget {
@@ -15,23 +15,23 @@ class Provider extends InheritedWidget {
 }
 
 class CartProvider {
+  ///////////////////////FOOD//////////////////////////////////
   //couterProvider only consists of a counter and a method which is responsible for increasing the value of count
-  List<FoodItem> foodItems = [];
+  List<Item> foodItems = [];
 
-  List<FoodItem> addToList(FoodItem foodItem) {
+  List<Item> addToListFood(Item foodItem) {
     bool isPresent = false;
 
     if (foodItems.length > 0) {
       for (int i = 0; i < foodItems.length; i++) {
         if (foodItems[i].id == foodItem.id) {
-          increaseItemQuantity(foodItem);
+          increaseItemQuantityFood(foodItem);
           isPresent = true;
           break;
         } else {
           isPresent = false;
         }
       }
-
       if (!isPresent) {
         foodItems.add(foodItem);
       }
@@ -42,10 +42,10 @@ class CartProvider {
     return foodItems;
   }
 
-  List<FoodItem> removeFromList(FoodItem foodItem) {
+  List<Item> removeFromListFood(Item foodItem) {
     if (foodItem.quantity > 1) {
       //only decrease the quantity
-      decreaseItemQuantity(foodItem);
+      decreaseItemQuantityFood(foodItem);
     } else {
       //remove it from the list
       foodItems.remove(foodItem);
@@ -53,6 +53,7 @@ class CartProvider {
     return foodItems;
   }
 
-  void increaseItemQuantity(FoodItem foodItem) => foodItem.incrementQuantity();
-  void decreaseItemQuantity(FoodItem foodItem) => foodItem.decrementQuantity();
+  void increaseItemQuantityFood(Item foodItem) => foodItem.incrementQuantity();
+  void decreaseItemQuantityFood(Item foodItem) => foodItem.decrementQuantity();
 }
+

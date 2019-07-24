@@ -1,31 +1,32 @@
 import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:food_delivery/bloc/provider.dart';
-import 'package:food_delivery/model/foodItem.dart';
+import 'package:food_delivery/model/itemsModel.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CartListBloc extends BlocBase {
 
   CartListBloc();
 
+///////////////////////FOOD//////////////////////////////////
   //recibe un num y cambia la cuenta
-  var _listController = BehaviorSubject<List<FoodItem>>.seeded([]);
+  var _listControllerFood = BehaviorSubject<List<Item>>.seeded([]);
   CartProvider provider = CartProvider();
   //output
-  Stream<List<FoodItem>> get listStream => _listController.stream;
+  Stream<List<Item>> get listStream => _listControllerFood.stream;
   //input
-  Sink<List<FoodItem>> get listSink => _listController.sink;
+  Sink<List<Item>> get listSinkFood => _listControllerFood.sink;
 
-  addToList(FoodItem foodItem) {
-    listSink.add(provider.addToList(foodItem));
+  addToList (Item foodItem) {
+    listSinkFood.add(provider.addToListFood(foodItem));
   }
 
-  removeFromList (FoodItem foodItem) {
-    listSink.add(provider.removeFromList(foodItem));
+  removeFromList (Item foodItem) {
+    listSinkFood.add(provider.removeFromListFood(foodItem));
   }
 
   void dispose() {
-    _listController.close();
+    _listControllerFood.close();
     super.dispose();
   }
 }

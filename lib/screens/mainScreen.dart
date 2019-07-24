@@ -1,10 +1,14 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/bloc/listTileColorBloc.dart';
+import 'package:food_delivery/model/itemsModel.dart';
+import 'package:food_delivery/screens/spaScreen.dart';
+import 'package:food_delivery/screens/userDataScreen.dart';
 import '../bloc/cartlistBloc.dart';
 import 'cartScreen.dart';
-import '../model/foodItem.dart';
+import 'farmaciaScreen.dart';
 import 'hotelScreen.dart';
+import 'licoreriaScreen.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -56,13 +60,13 @@ class Home extends StatelessWidget {
           children: <Widget>[
             title("Restaurantes", "cercanos"),
             //Cabecera, opcion de busqueda y lista de productos disponibles
-            FirstHalf(catName : "Comida"),
+            FirstHalf(catName: "Comida"),
             SizedBox(height: 45),
             //Se retorna la lista con todos los productos
-            for (var foodItem in fooditemList.foodItems)
+            for (var foodItem in fooditemList.items)
               Builder(
                 builder: (context) {
-                  return ItemContainer(foodItem: foodItem);
+                  return ItemContainer(item: foodItem);
                 },
               )
           ],
@@ -78,16 +82,15 @@ buildCart() {
   return StreamBuilder(
     stream: bloc.listStream,
     builder: (context, snapshot) {
-      List<FoodItem> foodItems = snapshot.data;
+      List<Item> foodItems = snapshot.data;
       int length = foodItems != null ? foodItems.length : 0;
 
-      return buildGestureDetector(length, context, foodItems);
+      return buildGestureDetector(length, context);
     },
   );
 }
 
-GestureDetector buildGestureDetector(
-    int length, BuildContext context, List<FoodItem> foodItems) {
+GestureDetector buildGestureDetector(int length, BuildContext context) {
   return GestureDetector(
     onTap: () {
       if (length > 0) {
@@ -131,9 +134,13 @@ header(context) {
         accountName: new Text("Laura"),
         accountEmail: new Text("laularez@"),
         currentAccountPicture: new GestureDetector(
-          onTap: () => print("Current user"),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => UserDataScreen()));
+          },
           child: new CircleAvatar(
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Color(0xFF0A4FAC),
           ),
         ),
         decoration: new BoxDecoration(
@@ -163,19 +170,38 @@ header(context) {
       new ListTile(
         title: new Text("SPAs"),
         trailing: new Icon(Icons.hot_tub),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) => SpaScreen()));
+        },
       ),
-      new ListTile(
-        title: new Text("Albarrotes"),
+      /*new ListTile(
+        title: new Text("Abarrotes"),
         trailing: new Icon(Icons.texture),
-      ),
+      ),*/
       new ListTile(
         title: new Text("Farmacias"),
-        trailing: new Icon(Icons.room),
+        trailing: new Icon(Icons.shopping_basket),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+              new MaterialPageRoute(builder: (context) => FarmaciaScreen()));
+        },
       ),
       new ListTile(
         title: new Text("Licorerias"),
-        trailing: new Icon(Icons.image),
+        trailing: new Icon(Icons.local_bar),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+              new MaterialPageRoute(builder: (context) => LicoreriaScreen()));
+        },
       ),
+      /*new ListTile(
+        title: new Text("Lavanderia"),
+        trailing: new Icon(Icons.local_laundry_service),
+      ),*/
     ],
   );
 }
@@ -250,55 +276,81 @@ Widget categories(context, catName) {
         GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
-            Navigator.of(context)
-                .push(new MaterialPageRoute(builder: (context) => MainScreen()));
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => MainScreen()));
           },
-            child: CategoryListItem(
-            categoryIcon: Icons.bug_report,
-            categoryName: "Comida",
+          child: CategoryListItem(
+            categoryIcon: Icons.restaurant,
+            categoryName: "Restaurant",
             availability: 6,
             selected: catName == "Comida" ? true : false,
           ),
         ),
-        
         GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
-            Navigator.of(context)
-                .push(new MaterialPageRoute(builder: (context) => HotelScreen()));
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => HotelScreen()));
           },
           child: CategoryListItem(
-            categoryIcon: Icons.bug_report,
+            categoryIcon: Icons.hotel,
             categoryName: "Hotel",
             availability: 0,
             selected: catName == "Hotel" ? true : false,
           ),
         ),
-        
-        CategoryListItem(
-          categoryIcon: Icons.bug_report,
-          categoryName: "Farmacia",
-          availability: 0,
-          selected: catName == "Farmacia" ? true : false,
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context)
+                .push(new MaterialPageRoute(builder: (context) => SpaScreen()));
+          },
+          child: CategoryListItem(
+            categoryIcon: Icons.hot_tub,
+            categoryName: "SPA",
+            availability: 0,
+            selected: catName == "SPA" ? true : false,
+          ),
         ),
-        CategoryListItem(
-          categoryIcon: Icons.bug_report,
-          categoryName: "Licoreria",
+        /*CategoryListItem(
+          categoryIcon: Icons.texture,
+          categoryName: "Abarrotes",
           availability: 0,
-          selected: catName == "Licoreria" ? true : false,
+          selected: catName == "Abarrotes" ? true : false,
+        ),*/
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => FarmaciaScreen()));
+          },
+          child: CategoryListItem(
+            categoryIcon: Icons.shopping_basket,
+            categoryName: "Farmacia",
+            availability: 0,
+            selected: catName == "Farmacia" ? true : false,
+          ),
         ),
-        CategoryListItem(
-          categoryIcon: Icons.bug_report,
-          categoryName: "Hotel",
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => LicoreriaScreen()));
+          },
+          child: CategoryListItem(
+            categoryIcon: Icons.local_bar,
+            categoryName: "Licoreria",
+            availability: 0,
+            selected: catName == "Licoreria" ? true : false,
+          ),
+        ),
+
+        /*CategoryListItem(
+          categoryIcon: Icons.local_laundry_service,
+          categoryName: "Lavanderia",
           availability: 0,
-          selected: catName == "Hotel" ? true : false,
-        ),
-        CategoryListItem(
-          categoryIcon: Icons.bug_report,
-          categoryName: "SPA",
-          availability: 0,
-          selected: catName == "SPA" ? true : false,
-        ),
+          selected: catName == "Lavanderia" ? true : false,
+        ),*/
       ],
     ),
   );
@@ -422,7 +474,7 @@ class CustomAppBar extends StatelessWidget {
           StreamBuilder(
             stream: bloc.listStream,
             builder: (context, snapshot) {
-              List<FoodItem> foodItems = snapshot.data;
+              List<Item> foodItems = snapshot.data;
               int length = foodItems != null ? foodItems.length : 0;
 
               return buildGestureDetector(length, context, foodItems);
@@ -434,7 +486,7 @@ class CustomAppBar extends StatelessWidget {
   }
 
   GestureDetector buildGestureDetector(
-      int length, BuildContext context, List<FoodItem> foodItems) {
+      int length, BuildContext context, List<Item> foodItems) {
     return GestureDetector(
       onTap: () {
         if (length > 0) {
@@ -457,17 +509,19 @@ class CustomAppBar extends StatelessWidget {
 
 class ItemContainer extends StatelessWidget {
   ItemContainer({
-    @required this.foodItem,
+    @required this.item,
+    //@required this.catItem,
   });
 
-  final FoodItem foodItem;
+  final Item item;
+  //final String catItem;
   final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
 
-  addToCart(FoodItem foodItem) {
+  addToCart(Item foodItem) {
     bloc.addToList(foodItem);
   }
 
-  removeFromList(FoodItem foodItem) {
+  removeFromList(Item foodItem) {
     bloc.removeFromList(foodItem);
   }
 
@@ -475,20 +529,20 @@ class ItemContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        addToCart(foodItem);
+        addToCart(item);
         final snackBar = SnackBar(
-          content: Text('${foodItem.title} agregado al carrito'),
+          content: Text('${item.title} agregado al carrito'),
           duration: Duration(milliseconds: 550),
         );
 
         Scaffold.of(context).showSnackBar(snackBar);
       },
       child: Items(
-        hotel: foodItem.hotel,
-        itemName: foodItem.title,
-        itemPrice: foodItem.price,
-        imgUrl: foodItem.imgUrl,
-        leftAligned: (foodItem.id % 2) == 0 ? true : false,
+        hotel: item.hotel,
+        itemName: item.title,
+        itemPrice: item.price,
+        imgUrl: item.imgUrl,
+        leftAligned: (item.id % 2) == 0 ? true : false,
       ),
     );
   }
@@ -504,7 +558,7 @@ class Items extends StatelessWidget {
   });
 
   final bool leftAligned;
-  final String imgUrl;
+  final Image imgUrl;
   final String itemName;
   final double itemPrice;
   final String hotel;
@@ -537,10 +591,7 @@ class Items extends StatelessWidget {
                         ? Radius.circular(containerBorderRadius)
                         : Radius.circular(0),
                   ),
-                  child: Image.network(
-                    imgUrl,
-                    fit: BoxFit.fill,
-                  ),
+                  child: imgUrl,
                 ),
               ),
               SizedBox(height: 20),
@@ -576,7 +627,7 @@ class Items extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.black45, fontSize: 15),
                                 children: [
-                                  TextSpan(text: "por "),
+                                  //TextSpan(text: "por "),
                                   TextSpan(
                                       text: hotel,
                                       style: TextStyle(

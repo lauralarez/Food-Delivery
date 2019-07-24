@@ -1,15 +1,16 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/model/itemsModel.dart';
+import 'package:food_delivery/screens/userDataScreen.dart';
 import '../bloc/cartlistBloc.dart';
 import '../bloc/listTileColorBloc.dart';
-import '../model/foodItem.dart';
 
 class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CartListBloc bloc = BlocProvider.getBloc<CartListBloc>();
-    List<FoodItem> foodItems;
+    List<Item> foodItems;
     return StreamBuilder(
       stream: bloc.listStream,
       builder: (context, snapshot) {
@@ -32,7 +33,7 @@ class Cart extends StatelessWidget {
 }
 
 class BottomBar extends StatelessWidget {
-  final List<FoodItem> foodItems;
+  final List<Item> foodItems;
 
   BottomBar(this.foodItems);
 
@@ -49,7 +50,7 @@ class BottomBar extends StatelessWidget {
             color: Colors.grey[700],
           ),
           persons(),
-          nextButtonBar(),
+          nextButtonBar(context),
         ],
       ),
     );
@@ -73,7 +74,7 @@ class BottomBar extends StatelessWidget {
     );
   }
 
-  Container totalAmount(List<FoodItem> foodItems) {
+  Container totalAmount(List<Item> foodItems) {
     return Container(
       margin: EdgeInsets.only(right: 10),
       padding: EdgeInsets.all(25),
@@ -93,7 +94,7 @@ class BottomBar extends StatelessWidget {
     );
   }
 
-  String returnTotalAmount(List<FoodItem> foodItems) {
+  String returnTotalAmount(List<Item> foodItems) {
     double totalAmount = 0.0;
 
     for (int i = 0; i < foodItems.length; i++) {
@@ -102,7 +103,7 @@ class BottomBar extends StatelessWidget {
     return totalAmount.toStringAsFixed(2);
   }
 
-  Container nextButtonBar() {
+  Container nextButtonBar(context) {
     return Container(
       margin: EdgeInsets.only(right: 25),
       padding: EdgeInsets.all(25),
@@ -118,12 +119,18 @@ class BottomBar extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Text(
-            "Siguiente",
-            style: TextStyle(
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
+          GestureDetector(
+            child: Text(
+              "Siguiente",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 16,
+              ),
             ),
+            onTap: () {
+              Navigator.push(
+                context, MaterialPageRoute(builder: (context) => UserDataScreen()));
+            },
           ),
         ],
       ),
@@ -199,7 +206,7 @@ class _CustomPersonWidgetState extends State<CustomPersonWidget> {
 }
 
 class CartBody extends StatelessWidget {
-  final List<FoodItem> foodItems;
+  final List<Item> foodItems;
 
   CartBody(this.foodItems);
 
@@ -277,7 +284,7 @@ class CartBody extends StatelessWidget {
 }
 
 class CartListItem extends StatelessWidget {
-  final FoodItem foodItem;
+  final Item foodItem;
 
   CartListItem({@required this.foodItem});
 
@@ -302,7 +309,7 @@ class DraggableChild extends StatelessWidget {
     @required this.foodItem,
   }) : super(key: key);
 
-  final FoodItem foodItem;
+  final Item foodItem;
 
   @override
   Widget build(BuildContext context) {
@@ -321,7 +328,7 @@ class DraggableChildFeedback extends StatelessWidget {
     @required this.foodItem,
   }) : super(key: key);
 
-  final FoodItem foodItem;
+  final Item foodItem;
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +362,7 @@ class ItemContent extends StatelessWidget {
     @required this.foodItem,
   }) : super(key: key);
 
-  final FoodItem foodItem;
+  final Item foodItem;
 
   @override
   Widget build(BuildContext context) {
@@ -443,20 +450,20 @@ class DragTargetWidget extends StatefulWidget {
 class _DragTargetWidgetState extends State<DragTargetWidget> {
   @override
   Widget build(BuildContext context) {
-    FoodItem currentFoodItem;
+    Item currentFoodItem;
     final ColorBloc colorBloc = BlocProvider.getBloc<ColorBloc>();
 
-    return DragTarget<FoodItem>(
-      onAccept: (FoodItem foodItem) {
+    return DragTarget<Item>(
+      onAccept: (Item foodItem) {
         currentFoodItem = foodItem;
         colorBloc.setColor(Colors.white);
         widget.bloc.removeFromList(currentFoodItem);
       },
-      onWillAccept: (FoodItem foodItem) {
+      onWillAccept: (Item foodItem) {
         colorBloc.setColor(Colors.red);
         return true;
       },
-      onLeave: (FoodItem foodItem) {
+      onLeave: (Item foodItem) {
         colorBloc.setColor(Colors.white);
       },
       builder: (BuildContext context, List incoming, List rejected) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/model/itemsModel.dart';
 import 'mainScreen.dart';
 
-class HotelScreen extends StatelessWidget {
+class SpaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -36,14 +36,14 @@ class HotelScreen extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             //Cabecera, opcion de busqueda y lista de productos disponibles
-            title("Hoteles", "cercanos"),
-            FirstHalf(catName : "Hotel"),
+            title("SPAs", "cercanos"),
+            FirstHalf(catName : "SPA"),
             SizedBox(height: 45),
             //Se retorna la lista con todos los productos
-            for (var hotelItem in hotelitemList.items)
+            for (var spaItem in spaitemList.items)
               Builder(
                 builder: (context) {
-                  return ItemContainer(item: hotelItem);
+                  return ItemContainer(item: spaItem);
                 },
               )
           ],
