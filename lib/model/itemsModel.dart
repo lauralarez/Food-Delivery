@@ -160,6 +160,67 @@ ItemList licoreriaitemList = ItemList(items: [
   ),
 ]);
 
+ItemList lavanderiaitemList = ItemList(items: [
+  Item(
+    id: 1,
+    title: "LavaSports Lavadora 4.5 Kg",
+    hotel: "PBX 215 8573, Bogotá, Colombia",
+    price: 25.45,
+    imgUrl: Image.asset(
+      'images/lavanderia_pqq.jpg',
+    ),
+  ),
+  Item(
+    id: 2,
+    title: "LavaSports Secado",
+    hotel: "PBX 215 8573, Bogotá, Colombia",
+    price: 18.49,
+    imgUrl: Image.asset(
+      'images/secado2.jpg',
+    ),
+  ),
+  Item(
+    id: 3,
+    title: "LavaSports Lavado Lenceria",
+    hotel: "PBX 215 8573, Bogotá, Colombia",
+    price: 8.99,
+    imgUrl: Image.asset(
+      'images/secadora.jpg',
+    ),
+  ),
+]);
+
+
+ItemList infantilitemList = ItemList(items: [
+  Item(
+    id: 1,
+    title: "Jardín Infancia Creativa (por hora)",
+    hotel: "Cl. 19, #10B-16, Bogotá, Colombia",
+    price: 25.45,
+    imgUrl: Image.asset(
+      'images/guarderiaHora.jpg',
+    ),
+  ),
+  Item(
+    id: 2,
+    title: "Jardín Infancia Creativa Merienda",
+    hotel: "Cl. 19, #10B-16, Bogotá, Colombia",
+    price: 6.49,
+    imgUrl: Image.asset(
+      'images/merienda.jpg',
+    ),
+  ),
+  Item(
+    id: 3,
+    title: "Jardín Infancia Creativa Transporte",
+    hotel: "Cl. 19, #10B-16, Bogotá, Colombia",
+    price: 11.99,
+    imgUrl: Image.asset(
+      'images/transporteInfantil.jpg',
+    ),
+  ),
+]);
+
 class ItemList {
   List<Item> items;
 

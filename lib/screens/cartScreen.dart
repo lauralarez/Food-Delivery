@@ -63,12 +63,19 @@ class BottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text("Personas",
+          Text("Pagar con: ",
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 18,
                 fontWeight: FontWeight.w700,
               )),
-          CustomPersonWidget(),
+          //CustomPersonWidget(),
+          Container(
+            height: 50,
+            width: 150,
+            child: Center(
+              child: PayFormDropDown(),
+            ),
+          ),
         ],
       ),
     );
@@ -77,7 +84,7 @@ class BottomBar extends StatelessWidget {
   Container totalAmount(List<Item> foodItems) {
     return Container(
       margin: EdgeInsets.only(right: 10),
-      padding: EdgeInsets.all(25),
+      padding: EdgeInsets.fromLTRB(5, 5, 5, 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -87,7 +94,7 @@ class BottomBar extends StatelessWidget {
           ),
           Text(
             "\$${returnTotalAmount(foodItems)}",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
           ),
         ],
       ),
@@ -115,7 +122,7 @@ class BottomBar extends StatelessWidget {
             "15-25 min",
             style: TextStyle(
               fontWeight: FontWeight.w800,
-              fontSize: 14,
+              fontSize: 18,
             ),
           ),
           Spacer(),
@@ -124,12 +131,12 @@ class BottomBar extends StatelessWidget {
               "Siguiente",
               style: TextStyle(
                 fontWeight: FontWeight.w900,
-                fontSize: 16,
+                fontSize: 18,
               ),
             ),
             onTap: () {
-              Navigator.push(
-                context, MaterialPageRoute(builder: (context) => UserDataScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserDataScreen()));
             },
           ),
         ],
@@ -200,6 +207,42 @@ class _CustomPersonWidgetState extends State<CustomPersonWidget> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class PayFormDropDown extends StatefulWidget {
+  PayFormDropDown({Key key}) : super(key: key);
+
+  @override
+  PayFormDropDownState createState() => PayFormDropDownState();
+}
+
+class PayFormDropDownState extends State<PayFormDropDown> {
+  String dropdownValue = 'Efectivo';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: DropdownButton<String>(
+          isDense: false,
+          isExpanded: true,
+          value: dropdownValue,
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+            });
+          },
+          items: <String>['Efectivo', 'Tranferencia', 'Tarjeta']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value, style: TextStyle(fontSize: 18),),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
@@ -380,7 +423,8 @@ class ItemContent extends StatelessWidget {
               width: 80,
             ),
           ),*/
-          RichText(
+          Expanded(
+            child: RichText(
             text: TextSpan(
                 style: TextStyle(
                     fontSize: 16,
@@ -394,6 +438,8 @@ class ItemContent extends StatelessWidget {
                   ),
                 ]),
           ),
+          ),
+          
           Text(
             "\$${foodItem.quantity * foodItem.price}",
             style:

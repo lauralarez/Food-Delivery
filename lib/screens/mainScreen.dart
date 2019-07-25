@@ -8,6 +8,8 @@ import '../bloc/cartlistBloc.dart';
 import 'cartScreen.dart';
 import 'farmaciaScreen.dart';
 import 'hotelScreen.dart';
+import 'infantilScreen.dart';
+import 'lavanderiaScreen.dart';
 import 'licoreriaScreen.dart';
 
 class MainScreen extends StatelessWidget {
@@ -198,10 +200,24 @@ header(context) {
               new MaterialPageRoute(builder: (context) => LicoreriaScreen()));
         },
       ),
-      /*new ListTile(
+      new ListTile(
         title: new Text("Lavanderia"),
         trailing: new Icon(Icons.local_laundry_service),
-      ),*/
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+              new MaterialPageRoute(builder: (context) => LavanderiaScreen()));
+        },
+      ),
+      new ListTile(
+        title: new Text("Guarderia"),
+        trailing: new Icon(Icons.child_care),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+              new MaterialPageRoute(builder: (context) => GuarderiaScreen()));
+        },
+      ),
     ],
   );
 }
@@ -344,13 +360,32 @@ Widget categories(context, catName) {
             selected: catName == "Licoreria" ? true : false,
           ),
         ),
-
-        /*CategoryListItem(
-          categoryIcon: Icons.local_laundry_service,
-          categoryName: "Lavanderia",
-          availability: 0,
-          selected: catName == "Lavanderia" ? true : false,
-        ),*/
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => LavanderiaScreen()));
+          },
+          child: CategoryListItem(
+            categoryIcon: Icons.local_laundry_service,
+            categoryName: "Lavanderia",
+            availability: 0,
+            selected: catName == "Lavanderia" ? true : false,
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => GuarderiaScreen()));
+          },
+          child: CategoryListItem(
+            categoryIcon: Icons.child_care,
+            categoryName: "Guarderia",
+            availability: 0,
+            selected: catName == "Guarderia" ? true : false,
+          ),
+        ),
       ],
     ),
   );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/screens/registrationScreen.dart';
 import '../bloc/loginBloc.dart';
-import '../bloc/provider.dart';
 import 'mainScreen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -17,13 +16,10 @@ class LoginScreen extends StatelessWidget {
                 margin: EdgeInsets.only(top: 25.0),
               ),
               Image.asset(
-                'images/logo_spondylux_vertical.png',
-                width: 600,
-                height: 340,
-                fit: BoxFit.cover,
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 25.0),
+                'images/icono_spondylux.png',
+                width: 500,
+                height: 230,
+                fit: BoxFit.scaleDown,
               ),
               emailField(bloc),
               passwordField(bloc),

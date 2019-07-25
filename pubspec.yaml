@@ -73,6 +73,13 @@ flutter:
     - images/ViaggioCountry.jpg
     - images/whysky.jpg
     - images/logo_spondylux_vertical.png
+    - images/guarderiaHora.jpg
+    - images/lavanderia_pqq.jpg
+    - images/merienda.jpg
+    - images/secado2.jpg
+    - images/secadora.jpg
+    - images/transporteInfantil.jpg
+    - images/icono_spondylux.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
