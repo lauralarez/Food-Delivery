@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,16 @@ import 'package:food_delivery/model/itemsModel.dart';
 import 'package:food_delivery/screens/userDataScreen.dart';
 import '../bloc/cartlistBloc.dart';
 import '../bloc/listTileColorBloc.dart';
+import 'package:flutter_appavailability/flutter_appavailability.dart';
+
+class CartScreen extends StatefulWidget {
+  final List<Item> foodItems;
+
+  CartScreen(this.foodItems);
+
+  @override
+  BottomBar createState() => new BottomBar(foodItems);
+}
 
 class Cart extends StatelessWidget {
   @override
@@ -20,7 +31,7 @@ class Cart extends StatelessWidget {
             body: SafeArea(
               child: CartBody(foodItems),
             ),
-            bottomNavigationBar: BottomBar(foodItems),
+            bottomNavigationBar: CartScreen(foodItems),
           );
         } else {
           return Container(
@@ -32,10 +43,54 @@ class Cart extends StatelessWidget {
   }
 }
 
-class BottomBar extends StatelessWidget {
+class BottomBar extends State<CartScreen> {
   final List<Item> foodItems;
 
   BottomBar(this.foodItems);
+
+  List<Map<String, String>> installedApps;
+  List<Map<String, String>> iOSApps = [
+    {"app_name": "Calendar", "package_name": "calshow://"},
+    //{"app_name": "Facebook", "package_name": "fb://"},
+    //{"app_name": "Whatsapp", "package_name": "whatsapp://"},
+    //{"app_name": "CookiePayment", "package_name": "sqip.flutter.example"}
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> getApps() async {
+    List<Map<String, String>> _installedApps;
+
+    if (Platform.isAndroid) {
+      _installedApps = [
+        {"app_name": "Payments", "package_name": "sqip.flutter.example"},
+      ];
+      
+      //await AppAvailability.getInstalledApps();
+
+      print(await AppAvailability.checkAvailability("com.android.chrome"));
+      // Returns: Map<String, String>{app_name: Chrome, package_name: com.android.chrome, versionCode: null, version_name: 55.0.2883.91}
+
+      print(await AppAvailability.isAppEnabled("com.android.chrome"));
+      // Returns: true
+
+    } else if (Platform.isIOS) {
+      // iOS doesn't allow to get installed apps.
+      _installedApps = iOSApps;
+
+      print(await AppAvailability.checkAvailability("calshow://"));
+      //print(await AppAvailability.checkAvailability("com.squareup.sqip.flutter"));
+      // Returns: Map<String, String>{app_name: , package_name: calshow://, versionCode: , version_name: }
+
+    }
+
+    setState(() {
+      installedApps = _installedApps;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +166,7 @@ class BottomBar extends StatelessWidget {
   }
 
   Container nextButtonBar(context) {
+    if (installedApps == null) getApps();
     return Container(
       margin: EdgeInsets.only(right: 25),
       padding: EdgeInsets.all(25),
@@ -135,8 +191,17 @@ class BottomBar extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserDataScreen()));
+              Scaffold.of(context).hideCurrentSnackBar();
+              AppAvailability.launchApp(installedApps[0]["package_name"])
+                  .then((_) {
+                print("App ${installedApps[0]["app_name"]} launched!");
+              }).catchError((err) {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                        "App ${installedApps[0]["app_name"]} not found!")));
+                print(err);
+              });
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => UserDataScreen()));
             },
           ),
         ],
@@ -239,7 +304,10 @@ class PayFormDropDownState extends State<PayFormDropDown> {
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value, style: TextStyle(fontSize: 18),),
+              child: Text(
+                value,
+                style: TextStyle(fontSize: 18),
+              ),
             );
           }).toList(),
         ),
@@ -425,21 +493,20 @@ class ItemContent extends StatelessWidget {
           ),*/
           Expanded(
             child: RichText(
-            text: TextSpan(
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700),
-                children: [
-                  TextSpan(text: foodItem.quantity.toString()),
-                  TextSpan(text: " x "),
-                  TextSpan(
-                    text: foodItem.title,
-                  ),
-                ]),
+              text: TextSpan(
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700),
+                  children: [
+                    TextSpan(text: foodItem.quantity.toString()),
+                    TextSpan(text: " x "),
+                    TextSpan(
+                      text: foodItem.title,
+                    ),
+                  ]),
+            ),
           ),
-          ),
-          
           Text(
             "\$${foodItem.quantity * foodItem.price}",
             style:
